@@ -3,7 +3,8 @@ package main
 import (
 	"bufio"
 	"fmt"
-	goterminal "go-terminal/functions/ls"
+	cmdLS "go-terminal/functions/ls"
+	cmdPWD "go-terminal/functions/pwd"
 	"log"
 	"os"
 	"strings"
@@ -11,6 +12,7 @@ import (
 
 const (
 	ls   = "ls"
+	pwd  = "pwd"
 	menu = "menu"
 	help = "help"
 	exit = "exit"
@@ -20,7 +22,8 @@ func main() {
 
 	fmt.Println("--- terminal emulator written in go ---")
 
-	realListener := goterminal.RealListFiles{}
+	realListener := cmdLS.RealListFiles{}
+	realPrintWorkDir := cmdPWD.RealPrintWorkDir{}
 
 	scanner := bufio.NewScanner(os.Stdin)
 
@@ -43,10 +46,12 @@ func main() {
 		switch mainCommand {
 
 		case ls:
-			goterminal.HandleLS(args, realListener)
+			cmdLS.HandleLS(args, realListener)
+		case pwd:
+			cmdPWD.HandlePWD(args, realPrintWorkDir)
 
 		case menu, help:
-			fmt.Println("list of command available commands: ls")
+			fmt.Println("list of available commands: ls, pwd")
 
 		case exit:
 			return
